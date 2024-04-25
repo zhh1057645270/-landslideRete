@@ -1,0 +1,77 @@
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution');
+
+module.exports = {
+	root: true,
+	globals: {
+		Cesium: 'writable',
+		projectConfig: 'writable',
+	},
+	env: {
+		browser: true,
+	},
+	extends: [
+		'eslint:recommended',
+		'plugin:vue/vue3-essential',
+		// 'plugin:vue/vue3-recommended',
+		'@vue/eslint-config-typescript',
+		'@vue/eslint-config-prettier',
+	],
+	plugins: ['vue', '@typescript-eslint'],
+	ignorePatterns: ['*.d.ts'],
+	parser: 'vue-eslint-parser',
+	parserOptions: {
+		ecmaVersion: 'latest',
+		sourceType: 'module',
+		parser: '@typescript-eslint/parser',
+	},
+	rules: {
+		// http://eslint.cn/docs/rules/
+		// https://eslint.vuejs.org/rules/
+		// 0关闭，1警告，2报错
+		'@type-eslint/ban-ts-ignore': 0,
+		'@type-eslint/explicit-function-return-type': 0,
+		'@type-eslint/no-explicit-any': 0,
+		'@type-eslint/no-var-requires': 0,
+		'@type-eslint/no-empty-function': 0,
+		'@type-eslint/no-use-before-define': 0,
+		'@type-eslint/ban-ts-comment': 0,
+		'@type-eslint/ban-types': 0,
+		'@type-eslint/no-non-null-assertion': 0,
+		'@type-eslint/explicit-module-boundary-types': 0,
+		'vue/custom-event-name-casing': 0,
+		'vue/attributes-order': 0,
+		'vue/one-component-per-file': 0,
+		'vue/html-closing-bracket-newline': 0,
+		'vue/max-attributes-per-line': 0,
+		'vue/multiline-html-element-content-newline': 0,
+		'vue/singleline-html-element-content-newline': 0,
+		'vue/attribute-hyphenation': 0,
+		'vue/html-self-closing': 0,
+		'vue/no-multiple-template-root': 0,
+		'vue/require-default-prop': 0,
+		'vue/no-v-model-argument': 0,
+		'vue/no-arrow-functions-in-watch': 0,
+		'vue/no-template-key': 0,
+		'vue/no-v-html': 0,
+		'vue/comment-directive': 0,
+		'vue/no-parsing-error': 0,
+		'vue/no-deprecated-v-on-native-modifier': 0,
+		'vue/multi-word-component-names': 0,
+		'no-useless-escape': 0,
+		'no-sparse-arrays': 0,
+		'no-prototype-builtins': 0,
+		'no-constant-condition': 0,
+		'no-use-before-define': 0,
+		'no-restricted-globals': 0,
+		'no-restricted-syntax': 0,
+		'generator-star-spacing': 0,
+		'no-unreachable': 0,
+		'no-multiple-template-root': 0,
+		'no-unused-vars': 1,
+		'no-v-model-argument': 0,
+		'no-case-declarations': 0,
+		'no-console': 1,
+		'no-undef': 0, //ts会检查
+	},
+};

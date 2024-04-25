@@ -1,0 +1,97 @@
+html,
+body,
+#app {
+	font-family: 'HarmonyOS Sans SC';
+	font-size: 14px;
+	height: 100vh;
+	width: 100vw;
+	background: #0e2e45;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-v {
+	flex-direction: column;
+}
+
+.flex-v-c {
+	align-items: center;
+}
+
+.flex-v-s {
+	align-items: flex-start;
+}
+.flex-v-e {
+	align-items: flex-end;
+}
+.flex-r-c {
+	justify-content: center;
+}
+.flex-r-b {
+	justify-content: space-between;
+}
+.flex-r-a {
+	justify-content: space-around;
+}
+.flex-r-e {
+	justify-content: flex-end;
+}
+.flex-a-c {
+	align-items: center;
+	justify-content: center;
+}
+.flex-auto {
+	flex: 1;
+}
+
+.flex-wrap {
+	flex-wrap: wrap;
+}
+
+.hoverable {
+	pointer-events: auto;
+}
+
+@each $p, $m in (p: padding, m: margin) {
+	@each $d, $fd in (t: top, r: right, b: bottom, l: left, '': '') {
+		@for $i from 1 through 50 {
+			@if $d == '' {
+				.#{$p}-#{$i} {
+					#{$m}: $i * 1px;
+				}
+			} @else {
+				.#{$p}#{$d}-#{$i} {
+					#{$m}-#{$fd}: $i * 1px;
+				}
+			}
+		}
+	}
+}
+
+@for $i from 1 through 100 {
+	.font-#{ $i } {
+		font-size: $i * 1px;
+	}
+}
+@for $i from 1 through 100 {
+	.lh-#{ $i } {
+		line-height: $i * 1px;
+	}
+}
+@for $i from 1 through 500 {
+	.w-#{ $i } {
+		width: $i * 1px;
+	}
+	.h-#{ $i } {
+		height: $i * 1px;
+	}
+}
+.w-full {
+	width: 100%;
+}
+
+.h-full {
+	height: 100%;
+}

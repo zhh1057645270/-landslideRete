@@ -1,0 +1,84 @@
+{
+	"name": "max-template",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "vite --host --open",
+		"build": "run-p type-check build-only",
+		"preview": "vite preview",
+		"build-only": "vite build",
+		"type-check": "vue-tsc --noEmit",
+		"lint-fix": "eslint --fix --ext .js --ext .jsx --ext .ts --ext .vue src/",
+		"prepare": "husky install"
+	},
+	"dependencies": {
+		"amfe-flexible": "^2.2.1",
+		"ant-design-vue": "^4.1.2",
+		"axios": "^1.3.2",
+		"echarts": "^5.5.0",
+		"element-plus": "^2.2.26",
+		"elkjs": "^0.9.2",
+		"mitt": "^3.0.0",
+		"pinia": "^2.0.28",
+		"popmotion": "^11.0.5",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"rete": "^2.0.3",
+		"rete-area-plugin": "^2.0.4",
+		"rete-auto-arrange-plugin": "^2.0.1",
+		"rete-connection-plugin": "^2.0.1",
+		"rete-context-menu-plugin": "^2.0.2",
+		"rete-react-plugin": "^2.0.5",
+		"rete-render-utils": "^2.0.2",
+		"rete-studio-core": "^0.0.0",
+		"rete-vue-plugin": "^2.1.0",
+		"rete-vue-render-plugin": "^0.5.2",
+		"rollup-plugin-external-globals": "^0.7.1",
+		"styled-components": "^6.1.8",
+		"v-charts": "^1.19.0",
+		"vite-plugin-style-import": "^2.0.0",
+		"vite-plugin-svg-icons": "^2.0.1",
+		"vue": "^3.2.45",
+		"vue-echarts": "^6.5.2",
+		"vue-router": "^4.1.6",
+		"web-worker": "^1.3.0",
+		"workflow-bpmn-modeler": "^0.2.8"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^17.6.6",
+		"@commitlint/config-conventional": "^17.6.6",
+		"@rushstack/eslint-patch": "^1.1.4",
+		"@types/node": "^18.11.12",
+		"@types/react": "^18.2.79",
+		"@types/react-dom": "^18.2.25",
+		"@typescript-eslint/parser": "^5.60.1",
+		"@vitejs/plugin-vue": "^4.0.0",
+		"@vue/eslint-config-prettier": "^7.1.0",
+		"@vue/eslint-config-typescript": "^11.0.0",
+		"@vue/tsconfig": "^0.1.3",
+		"eslint": "^8.22.0",
+		"eslint-plugin-vue": "^9.3.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^13.2.3",
+		"npm-run-all": "^4.1.5",
+		"postcss-pxtorem": "^6.0.0",
+		"prettier": "^2.7.1",
+		"sass": "^1.56.2",
+		"typescript": "~4.7.4",
+		"unplugin-auto-import": "^0.12.1",
+		"unplugin-element-plus": "^0.4.1",
+		"unplugin-vue-components": "^0.22.12",
+		"vite": "^4.0.0",
+		"vue-tsc": "^1.0.12"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx,json,vue}": [
+			"eslint --fix --ignore-pattern *.d.ts"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	}
+}

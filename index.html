@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>滑坡易发性评估分析系统</title>
+		<link rel="stylesheet" href="/Cesium/Widgets/widgets.css" />
+		<script src="/projectConfig.js"></script>
+	</head>
+
+	<body>
+		<div id="app"></div>
+		<script type="module" src="/src/main.ts"></script>
+		<script>
+			window['CESIUM_BASE_URL'] = './Cesium/';
+		</script>
+		<script>
+			window.addEventListener('load', function () {
+				let target = document.getElementById('cesiumScript');
+				if (target) return;
+				Window['CESIUM_LOADED'] = false;
+				target = document.createElement('script');
+				target.setAttribute('id', 'cesiumScript');
+				target.setAttribute('src', '/Cesium/Cesium.js');
+				const head = document.getElementsByTagName('head')[0];
+				head.appendChild(target);
+				target.onload = function (env) {
+					Window['CESIUM_LOADED'] = true;
+				};
+			});
+		</script>
+	</body>
+</html>
