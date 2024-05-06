@@ -55,4 +55,24 @@ const createCesiumScript = function () {
 	};
 };
 
-export { createCesiumScript, createMapInstance, initMap };
+const createGeojson = async function(container:string){
+	const viewInstance = await initMap(container);
+	var image = viewInstance.entities.add({
+		name : 'PNG Image',
+		position: Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883),
+		billboard : {
+			image : '@/assets/imgs/tdly.png',
+			width : 64,
+			height : 64
+		}
+	});
+	
+	// 设置相机视角
+	viewInstance.zoomTo(image);
+
+
+}
+
+
+
+export { createCesiumScript, createMapInstance, initMap ,createGeojson};

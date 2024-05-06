@@ -17,10 +17,16 @@ export function cancelAllAxios() {
 	axiosCancel = [];
 }
 const instance = axios.create({
-	baseURL: projectConfig.baseUrl + '/api', //接口统一域名
+	baseURL: projectConfig.baseUrl, //接口统一域名
+	timeout: 300000, //设置超时
+});
+
+const instanceSHZT = axios.create({
+	baseURL: projectConfig.baseUrlSHZT, //接口二
 	timeout: 5000, //设置超时
 });
-const instances = [instance];
+
+const instances = [instance, instanceSHZT];
 
 instances.forEach((r) => {
 	const def = r.defaults as any;
@@ -30,8 +36,11 @@ instances.forEach((r) => {
 	r.interceptors.request.use(
 		function (config: any) {
 			//在发送请求之前做些什么 token
-			if (Session.get('token')) {
-				config.headers.common['Authorization'] = `${Session.get('token')}`;
+			const token = Session.get('token');
+			if (token) {
+				// config.headers.common['Authorization'] = `${Session.get('token')}`;
+				// console.log('token', token);
+				config.headers.Authorization = token;
 			}
 			return config;
 		},
@@ -142,4 +151,4 @@ instances.forEach((r) => {
 	);
 });
 
-export { instance };
+export { instance, instanceSHZT};

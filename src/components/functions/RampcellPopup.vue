@@ -1,16 +1,47 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Popup from '@/components/functions/popup/RampcellIndex.vue';
+import Popup from './popup/RampcellIndex.vue';
+import { Api } from '@/api/index';
+import axios from 'axios';
 
-const fileName1 = ref('');
+var divide_size = ref(1000000);
+var merge_size = ref(10000);
+async function Grasstool() {
+	const resdata = await Api.GrassToolApi.GrassTool({
+		input_raster: girdfile.value,
+		divide_size: divide_size.value,
+		merge_size: merge_size.value,
+		output_slopeunit: fileName2.value,
+		output_cvar: fileName3.value,
+		output_area: fileName4.value,
+	});
+	console.log("斜坡单元格划分接口测试成功")
+	console.log(resdata)
+}
+
+const girdfile = ref('');
 const fileInput1 = ref(null);
 function triggerFileInput1() {
 	fileInput1.value.click();
 }
-function handleFileChange1(event: any) {
-	const file = event.target.files[0];
-	if (file) {
-		fileName1.value = file.name;
+const InputGirdFileChange = async (event: Event) => {
+	const input = event.target as HTMLInputElement;
+	if (input.files && input.files[0]) {
+		girdfile.value = input.files[0].name;
+		const file = input.files[0];
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await axios.post('http://127.0.0.1:9898/upload', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log('File uploaded successfully:', response.data);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
 	}
 }
 const fileName2 = ref('');
@@ -62,7 +93,7 @@ function decrement(id: any) {
 }
 
 function Cancelfun() {
-	fileName1.value = '';
+	girdfile.value = '';
 	fileInput1.value = null;
 	fileName2.value = '';
 	fileInput2.value = null;
@@ -74,19 +105,19 @@ function Cancelfun() {
 </script>
 
 <template>
-	<Popup name="斜坡单元格划分" left="0.7rem" top="0.08rem"  style="width:15%">
+	<Popup name="斜坡单元格划分" left="0.7rem" top="0.08rem" style="width:15%">
 		<div class="popup-content">
 			<div class="parameters-container">
 				<label for="parameter1">输入栅格</label>
 				<div class="container">
-					<input type="file" ref="fileInput1" @change="handleFileChange1" style="display: none" />
-					<input type="text" v-model="fileName1" class="file-name-input" />
+					<input type="file" ref="fileInput1" @change="InputGirdFileChange" style="display: none" />
+					<input type="text" v-model="girdfile" class="file-name-input" />
 					<button @click="triggerFileInput1" class="upload-btn"></button>
 				</div>
 				<div class="parameter">
 					<label for="parameter2">划分面积阈值</label>
 					<div class="number-adjuster" style="border:1px solid #ccc">
-						<input type="text" id="parameter2" value="10000" style="border:0px">
+						<input type="text" id="parameter2" v-model="divide_size" style="border:0px">
 						<div class="button-group">
 							<button @click="increment('parameter2')" id="upbutton"></button>
 							<button @click="decrement('parameter2')" id="downbutton"></button>
@@ -96,27 +127,27 @@ function Cancelfun() {
 				<div class="parameter">
 					<label for="parameter3">合并面积阈值</label>
 					<div class="number-adjuster" style="border:1px solid #ccc">
-						<input type="text" id="parameter3" value="10000" style="border:0px">
-					<div class="button-group">
-						<button @click="increment('parameter3')" id="upbutton"></button>
-						<button @click="decrement('parameter3')" id="downbutton"></button>
+						<input type="text" id="parameter3" v-model="merge_size" style="border:0px">
+						<div class="button-group">
+							<button @click="increment('parameter3')" id="upbutton"></button>
+							<button @click="decrement('parameter3')" id="downbutton"></button>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="parameters-container">
-				<label for="parameter4">输出斜坡单元矢量结果</label>
-				<div class="container">
-					<input type="file" ref="fileInput2" @change="handleFileChange2" style="display: none" />
-					<input type="text" v-model="fileName2" class="file-name-input" />
-					<button @click="triggerFileInput2" class="upload-btn"></button>
+				<div class="parameters-container">
+					<label for="parameter4">输出斜坡单元矢量结果</label>
+					<div class="container">
+						<input type="file" ref="fileInput2" @change="handleFileChange2" style="display: none" />
+						<input type="text" v-model="fileName2" class="file-name-input" />
+						<button @click="triggerFileInput2" class="upload-btn"></button>
+					</div>
 				</div>
-			</div>
-			<div class="parameters-container">
-				<label for="parameter5">输出坡向圆方差</label>
-				<div class="container">
-					<input type="file" ref="fileInput3" @change="handleFileChange3" style="display: none" />
-					<input type="text" v-model="fileName3" class="file-name-input" />
-					<button @click="triggerFileInput3" class="upload-btn"></button>
+				<div class="parameters-container">
+					<label for="parameter5">输出坡向圆方差</label>
+					<div class="container">
+						<input type="file" ref="fileInput3" @change="handleFileChange3" style="display: none" />
+						<input type="text" v-model="fileName3" class="file-name-input" />
+						<button @click="triggerFileInput3" class="upload-btn"></button>
 					</div>
 				</div>
 				<div class="parameters-container">
@@ -127,8 +158,8 @@ function Cancelfun() {
 						<button @click="triggerFileInput4" class="upload-btn"></button>
 					</div>
 				</div>
-			<button class="donebutton">确定</button>
-			<button class="canclebutton" @click="Cancelfun">取消</button>
+				<button class="donebutton" @click="Grasstool">确定</button>
+				<button class="canclebutton" @click="Cancelfun">取消</button>
 			</div>
 		</div>
 	</Popup>
@@ -236,18 +267,18 @@ function Cancelfun() {
 	background-position: center;
 }
 
-.donebutton{
+.donebutton {
 	width: 30%;
-	height: 20%;
-	margin-top:4%;
+	height: 20px;
+	margin-top: 4%;
 	margin-left: 17%;
 	color: #ccc;
 	border: 1px solid rgb(161, 161, 161);
 }
 
-.canclebutton{
+.canclebutton {
 	width: 30%;
-	height: 20%;
+	height: 20px;
 	margin-left: 5%;
 	color: #ccc;
 	border: 1px solid rgb(161, 161, 161);

@@ -1,6 +1,6 @@
 <template>
 	<div class="rete" ref="reteRef">
-		<span class="title">定制分析流可视化编程模块</span>
+		<span class="title">不确定性分析可视反馈模块</span>
 		<slot />
 	</div>
 </template>

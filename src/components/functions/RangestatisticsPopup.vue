@@ -1,28 +1,71 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Popup from '@/components/functions/popup/RangestatisticsIndex.vue';
+import Popup from './popup/RangestatisticsIndex.vue';
+import { Api } from '@/api/index';
+import { concat } from 'lodash';
+import axios from 'axios';
 
-const fileName = ref('');
+const selectedValue = ref('平均值')
+async function zonalstat() {
+	const resdata = await Api.ZonalStatApi.ZonalStat({
+		stat_method: selectedValue.value,
+		input_shp: RegionFile.value,
+		input_tif: AssignmentGirdFile.value,
+		output_tif: fileName3.value,
+	});
+	console.log("区域统计接口测试成功")
+	console.log(resdata)
+}
+
+const RegionFile = ref('');
 const fileInput = ref(null);
 function triggerFileInput() {
 	fileInput.value.click();
 }
-function handleFileChange(event: any) {
-	const file = event.target.files[0];
-	if (file) {
-		fileName.value = file.name;
+const RegionFilechange = async (event: Event) => {
+	const input = event.target as HTMLInputElement;
+	if (input.files && input.files[0]) {
+		RegionFile.value = input.files[0].name;
+		const file = input.files[0];
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await axios.post('http://127.0.0.1:9898/upload', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log('File uploaded successfully:', response.data);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
 	}
 }
 
-const fileName2 = ref('');
+const AssignmentGirdFile = ref('');
 const fileInput2 = ref(null);
 function triggerFileInput2() {
 	fileInput2.value.click();
 }
-function handleFileChange2(event: any) {
-	const file = event.target.files[0];
-	if (file) {
-		fileName2.value = file.name;
+const AssignmentGirdFileChange = async (event: Event) => {
+	const input = event.target as HTMLInputElement;
+	if (input.files && input.files[0]) {
+		AssignmentGirdFile.value = input.files[0].name;
+		const file = input.files[0];
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const response = await axios.post('http://127.0.0.1:9898/upload', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log('File uploaded successfully:', response.data);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
 	}
 }
 
@@ -40,38 +83,40 @@ function handleFileChange3(event: any) {
 }
 
 function Cancelfun() {
-	fileName.value = '';
+	RegionFile.value = '';
 	fileInput.value = null;
-	fileName2.value = '';
+	AssignmentGirdFile.value = '';
 	fileInput2.value = null;
 	fileName3.value = '';
 	fileInput3.value = null;
+	console.log(RegionFile.value)
+	console.log(selectedValue.value)
 }
 </script>
 
 <template>
-	<Popup name="区域统计" left="0.62rem" top="0.08rem" style="width: 15%">
+	<Popup name="区域统计" left="0.62rem" top="0.08rem" style="width:15%">
 		<div class="popup-content">
 			<div class="parameters-container">
 				<label for="parameter1">区域要素</label>
 				<div class="container">
-					<input type="file" ref="fileInput" @change="handleFileChange" style="display: none" />
-					<input type="text" v-model="fileName" class="file-name-input" />
+					<input type="text" v-model="RegionFile" class="file-name-input" />
+					<input type="file" ref="fileInput" @change="RegionFilechange" style="display: none" />
 					<button @click="triggerFileInput" class="upload-btn"></button>
 				</div>
 				<div class="parameters-container">
 					<label for="parameter2">赋值栅格</label>
 					<div class="container">
-						<input type="file" ref="fileInput2" @change="handleFileChange2" style="display: none" />
-						<input type="text" v-model="fileName2" class="file-name-input" />
+						<input type="file" ref="fileInput2" @change="AssignmentGirdFileChange" style="display: none" />
+						<input type="text" v-model="AssignmentGirdFile" class="file-name-input" />
 						<button @click="triggerFileInput2" class="upload-btn"></button>
 					</div>
 				</div>
 				<div class="parameter">
 					<label for="parameter3">统计类型</label>
-					<select id="parameter3">
-						<option value="option1">平均值</option>
-						<option value="option2">众数</option>
+					<select id="parameter3" v-model="selectedValue">
+						<option value="平均值">平均值</option>
+						<option value="众数">众数</option>
 					</select>
 				</div>
 				<div class="parameters-container">
@@ -82,7 +127,7 @@ function Cancelfun() {
 						<button @click="triggerFileInput3" class="upload-btn"></button>
 					</div>
 				</div>
-				<button class="donebutton">确定</button>
+				<button class="donebutton" @click="zonalstat">确定</button>
 				<button class="canclebutton" @click="Cancelfun">取消</button>
 			</div>
 		</div>
@@ -154,7 +199,7 @@ function Cancelfun() {
 
 .donebutton {
 	width: 30%;
-	height: 20%;
+	height: 20px;
 	margin-top: 4%;
 	margin-left: 17%;
 	color: #ccc;
@@ -163,7 +208,7 @@ function Cancelfun() {
 
 .canclebutton {
 	width: 30%;
-	height: 20%;
+	height: 20px;
 	margin-left: 5%;
 	color: #ccc;
 	border: 1px solid rgb(161, 161, 161);

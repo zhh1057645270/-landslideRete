@@ -3,7 +3,8 @@
       @pointerdown.stop=""
       @dblclick.stop=""
       @click="data.onClick"
-    >{{data.label}}</a-button>
+       class="button"
+    ></a-button>
     </template>
     
     <script>
@@ -18,4 +19,10 @@
         AButton: Button
       }
     }
+
     </script>
+
+
+    <style>
+
+    </style>

@@ -4,8 +4,8 @@
     @dblclick.stop=""
     
     @click="click()"
-   class="button1"
-  >执行</a-button>
+   class="button"
+  ></a-button>
   </template>
   
   <script>
@@ -30,11 +30,5 @@
   </script>
 
   <style>
-.button1{
-  position: absolute;
-  width: 40%;
-  height: 20%;
-  left: 60%;
-  top:80%
-}
+
 </style>

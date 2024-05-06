@@ -4,13 +4,14 @@
 
 <script lang="ts" setup>
 import { onMounted, nextTick, onBeforeUnmount } from 'vue';
-import { initMap } from '@/utils/DTMap';
+import { initMap,createGeojson } from '@/utils/DTMap';
 let mapInstance: Cesium.Viewer;
 onMounted(() => {
 	nextTick(() => {
 		initMap('dt-container').then((instance) => {
 			mapInstance = instance;
 		});
+		
 	});
 });
 onBeforeUnmount(() => {

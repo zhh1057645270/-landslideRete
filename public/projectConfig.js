@@ -5,12 +5,12 @@
  * @LastEditTime: 2022-09-05 08:49:42
  */
 var projectConfig = {
-	baseUrl: '',
+	baseUrl: 'http://127.0.0.1:9898',
 	dtServerUrl: '',
 	dtServer: '',
-	title: '滑坡易发性评估分析系统',
+	title: '川藏铁路多灾种灾害监测预警平台',
 	showBaseMap: false, //是否显示底图
-	showTDTMap: ['影像底图', '影像注记'], //顺序为影像加载顺序 "矢量底图"/"矢量注记"/"影像底图"/"影像国界"/"影像注记"/"地形底图"/"地形国界"/"地形注记"
+	showTDTMap: ['影像底图', '影像注记'], 
 	tdtToken: '70dc47b131dstsftkstef27616d9f788',
 	debuger: {
 		fps: false,

@@ -20,15 +20,15 @@
         </div>
 
         <div class="function3">
-            <span class="title-buttom">模型选择</span>
+            <span class="title-buttom">训练模型选择</span>
             <div class="icon-3" @click="functionPopup5()"></div>
         </div>
         <div class="function4">
-            <span class="title-buttom">样本选择</span>
+            <span class="title-buttom">样本选取</span>
             <div class="icon-4"></div>
         </div>
         <div class="function5">
-            <span class="title-buttom">可视分析</span>
+            <span class="title-buttom">可视优化</span>
             <div class="icon-5"></div>
         </div>
         <!-- <inputNumber></inputNumber> -->
@@ -195,7 +195,7 @@ const Tooltip = () => {
             height: 35%;
             position: absolute;
             top: 38%;
-            left: 10%;
+            left: 22%;
             background-image: url("@/assets/imgs/形状 618@2x.png");
             background-repeat: no-repeat;
             background-size: contain;
@@ -212,7 +212,7 @@ const Tooltip = () => {
         position: absolute;
         width: 10%;
         height: 100%;
-        left: 58%;
+        left: 60%;
 
         // background-color: #fff;
         .icon-4 {
