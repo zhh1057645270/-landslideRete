@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    A: typeof import('./src/components/Rete-vue/a.vue')['default']
     Analyse: typeof import('./src/components/LayoutView/analyse.vue')['default']
     Buttombar: typeof import('./src/components/LayoutView/buttombar.vue')['default']
     Button: typeof import('./src/components/Rete-vue/button.vue')['default']
@@ -15,7 +14,6 @@ declare module '@vue/runtime-core' {
     DigitalItem: typeof import('./src/components/DynamicDigital/digitalItem.vue')['default']
     DynamicDigital: typeof import('./src/components/DynamicDigital/index.vue')['default']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     FactorAIN: typeof import('./src/components/Rete-vue/factorAIN.vue')['default']
@@ -23,9 +21,7 @@ declare module '@vue/runtime-core' {
     FeatureextractionIndex: typeof import('./src/components/functions/popup/FeatureextractionIndex.vue')['default']
     FeatureextractionPopup: typeof import('./src/components/functions/FeatureextractionPopup.vue')['default']
     Hr: typeof import('./src/components/utils/Hr.vue')['default']
-    Inputnember: typeof import('./src/components/Rete-vue/inputnember.vue')['default']
     InputNode: typeof import('./src/components/LayoutView/reteView/InputNode.vue')['default']
-    InputNumber: typeof import('./src/components/Rete-vue/inputNumber.vue')['default']
     LayoutBox: typeof import('./src/components/LayoutView/layoutBox.vue')['default']
     LayoutHeader: typeof import('./src/components/LayoutView/LayoutHeader.vue')['default']
     LayoutInnerBox: typeof import('./src/components/LayoutView/LayoutInnerBox.vue')['default']
@@ -49,7 +45,6 @@ declare module '@vue/runtime-core' {
     RasterreclassPopup: typeof import('./src/components/functions/RasterreclassPopup.vue')['default']
     Reclassification: typeof import('./src/components/Rete-vue/reclassification.vue')['default']
     ReteButton: typeof import('./src/components/Rete-vue/reteButton.vue')['default']
-    Retecomponent: typeof import('./src/components/Tooltip/retecomponent.vue')['default']
     ReteProgress: typeof import('./src/components/Rete-vue/reteProgress.vue')['default']
     ReteRadio: typeof import('./src/components/Rete-vue/reteRadio.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

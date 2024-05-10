@@ -1,28 +1,30 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Popup from './popup/RasterreclassIndex.vue';
-import { Api } from 'D:/plant/landslide-main/src/api/index';
+import { Api } from '@/api/index';
 import axios from 'axios';
+import CompositeEntityCollection from 'cesium/Source/DataSources/CompositeEntityCollection';
+import { Console } from 'console';
 
-const selectedValuetype = ref("离散型")
-const selectmethods = ref("相等间隔分类")
-const recalssnum = ref(1)
-const class_num = ref([])
-const ndv = ref()
+const selectedValuetype = ref('离散型');
+const selectmethods = ref('相等间隔分类');
+const recalssnum = ref(1);
+const class_num = ref([]);
+const ndv = ref();
 const oldValues = ref([]); // 用于保存旧值列表
 const newValues = ref([]); // 用于保存新值列表
 async function getrange() {
-	oldValues.value = []
-	newValues.value = []
+	oldValues.value = [];
+	newValues.value = [];
 	const resdata = await Api.ReclassificationApi.get_range({
 		input_raster: Inputgirdfile.value,
 	});
-	console.log("离散分类接口测试成功")
+	console.log('离散分类接口测试成功');
 	class_num.value = resdata.data.class_num;
 	ndv.value = resdata.data.ndv;
-	class_num.value.push("ndv");
+	class_num.value.push('ndv');
 	oldValues.value = [...class_num.value];
-	newValues.value = class_num.value.map((item, index) => index === class_num.value.length - 1 ? ndv.value : index);
+	newValues.value = class_num.value.map((item, index) => (index === class_num.value.length - 1 ? ndv.value : index));
 	console.log(oldValues.value);
 	console.log(newValues.value);
 }
@@ -33,19 +35,23 @@ async function reclassdiscrete() {
 		data_new: newValues.value,
 		output_raster: OutputGirdFile.value,
 	});
-	console.log("离散分类接口文件接口测试成功")
+	console.log(resdata.data);
+	if (resdata.status === 200) {
+		getfileurl();
+	}
+	console.log('离散分类接口文件接口测试成功');
 }
 
-const breaks_num = ref([])
+const breaks_num = ref([]);
 async function getBreaks() {
-	oldValues.value = []
-	newValues.value = []
+	oldValues.value = [];
+	newValues.value = [];
 	const resdata = await Api.ReclassificationApi.get_breaks({
 		input_raster: Inputgirdfile.value,
 		select_method: selectmethods.value,
-		reclass_n: recalssnum.value
+		reclass_n: recalssnum.value,
 	});
-	console.log("连续分类接口测试成功")
+	console.log('连续分类接口测试成功');
 	console.log(resdata.data);
 	breaks_num.value = resdata.data.breaks;
 	ndv.value = resdata.data.no_data_value;
@@ -55,32 +61,47 @@ async function getBreaks() {
 		newValues.value[i] = i + 1;
 	}
 	// 处理无数据值的情况
-	oldValues.value.push("ndv");
+	oldValues.value.push('ndv');
 	newValues.value.push(ndv.value);
 }
 
 async function reclasscontinuous() {
+	console.log(OutputGirdFile.value);
 	const resdata = await Api.ReclassificationApi.reclass_continuous({
 		value_ori: breaks_num.value.slice(0, breaks_num.value.length - 1),
 		value_new: newValues.value.slice(0, newValues.value.length - 1),
 		output_raster: OutputGirdFile.value,
 	});
-	console.log(resdata)
+	console.log(resdata.data);
+	if (resdata.status === 200) {
+		getfileurl();
+	}
+	console.log('连续类接口文件接口测试成功');
+}
 
-	// 从响应中获取文件名
-	const contentDisposition = resdata.headers.get('content-disposition');
-	const fileNameMatch = contentDisposition && contentDisposition.match(/filename="(.+)"/);
-	const fileName = fileNameMatch ? fileNameMatch[1] : 'downloaded_file';
+async function getfileurl() {
+	console.log('请求文件名为' + OutputGirdFile.value);
+	const response = await Api.ReclassificationApi.getfileapi({
+		filename: OutputGirdFile.value,
+	});
+	if (response.status === 200) {
+		// 创建一个URL指向这个blob对象，并用于创建下载链接
+		const url = window.URL.createObjectURL(new Blob([response.data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', OutputGirdFile.value); // 设置下载文件名
+		document.body.appendChild(link);
+		link.click(); // 触发下载
+		link.parentNode.removeChild(link); // 下载后移除元素
+		window.URL.revokeObjectURL(url); // 释放blob对象的URL
 
-	// 获取文件内容
-	const fileBlob = await resdata.arrayBuffer();
-	// 创建一个临时链接，并设置下载属性
-	const link = document.createElement('a');
-	link.href = window.URL.createObjectURL(fileBlob);
-	link.download = fileName;
-	link.click();
-	console.log(fileName)
-	console.log("连续类接口文件接口测试成功")
+		console.log('文件下载成功');
+	} else {
+		console.log('下载失败，状态码：' + response.status);
+	}
+
+	console.log(response.data);
+	console.log('接收文件接口测试成功');
 }
 
 const Inputgirdfile = ref('');
@@ -107,7 +128,6 @@ const InputGirdFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-
 };
 const OutputGirdFile = ref('');
 const fileInput2 = ref(null);
@@ -133,7 +153,6 @@ const OutputGirdFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-
 };
 
 function increment(id: any) {
@@ -151,9 +170,7 @@ function Cancelfun() {
 	fileInput2.value = null;
 }
 
-const items = ref([
-	{ oldValue: '', newValue: '' },
-]);
+const items = ref([{ oldValue: '', newValue: '' }]);
 function addItem() {
 	items.value.push({ oldValue: '', newValue: '' });
 }
@@ -164,23 +181,19 @@ const removeItem = () => {
 };
 
 function addClassification() {
-	console.log(selectedValuetype.value)
-	if (selectedValuetype.value == "离散型")
-		getrange();
-	else if (selectedValuetype.value == "连续型")
-		getBreaks();
+	console.log(selectedValuetype.value);
+	if (selectedValuetype.value == '离散型') getrange();
+	else if (selectedValuetype.value == '连续型') getBreaks();
 }
 
 function btnconfirm() {
-	if (selectedValuetype.value == "离散型")
-		reclassdiscrete();
-	else if (selectedValuetype.value == "连续型")
-		reclasscontinuous();
+	if (selectedValuetype.value == '离散型') reclassdiscrete();
+	else if (selectedValuetype.value == '连续型') reclasscontinuous();
 }
 </script>
 
 <template>
-	<Popup name="栅格重分类" left="0.62rem" top="0.08rem" style="width:15%">
+	<Popup name="栅格重分类" left="0.62rem" top="0.08rem" style="width: 15%">
 		<div class="popup-content">
 			<div class="parameters-container">
 				<label for="parameter1">输入栅格</label>
@@ -205,8 +218,8 @@ function btnconfirm() {
 				</div>
 				<div class="parameter">
 					<label for="parameter4">分类数</label>
-					<div class="number-adjuster" style="border:1px solid #ccc">
-						<input type="text" id="parameter4" v-model="recalssnum" style="border:0px">
+					<div class="number-adjuster" style="border: 1px solid #ccc">
+						<input type="text" id="parameter4" v-model="recalssnum" style="border: 0px" />
 						<div class="button-group">
 							<button @click="increment('parameter4')" id="upbutton"></button>
 							<button @click="decrement('parameter4')" id="downbutton"></button>
@@ -216,14 +229,13 @@ function btnconfirm() {
 				<div class="parameters-container">
 					<label for="parameter4">重分类</label>
 					<div class="container">
-
 						<div class="row">
 							<div class="col">
 								<table class="table">
 									<thead>
 										<tr>
-											<th scope="col" style="width:145px">旧值</th>
-											<th scope="col" style="width:max-content">新值</th>
+											<th scope="col" style="width: 75%">旧值</th>
+											<th scope="col" style="width: max-content">新值</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -282,7 +294,6 @@ function btnconfirm() {
 	border-radius: 4px;
 	background-color: #00000000;
 	color: #ccc;
-
 }
 
 .parameter select {
@@ -324,8 +335,6 @@ function btnconfirm() {
 	display: inline-flex;
 	align-items: center;
 }
-
-
 
 .number-adjuster input {
 	width: 93%;
@@ -377,12 +386,9 @@ function btnconfirm() {
 	color: #ccc;
 	border: 1px solid rgb(161, 161, 161);
 }
-
 .row {
 	display: flex;
-
 }
-
 .col {
 	max-height: 150px;
 	/* 限制表格容器的最大高度 */
@@ -393,17 +399,14 @@ function btnconfirm() {
 	width: 90%;
 	border: 1px solid rgb(161, 161, 161);
 }
-
 .col2 {
-	width: 30%;
+	width: 22%;
 }
-
 .buttons-container {
 	display: flex;
 	justify-content: flex-end;
 	margin-right: 10px;
 }
-
 .reclassbutton {
 	width: 55px;
 	height: 20px;
