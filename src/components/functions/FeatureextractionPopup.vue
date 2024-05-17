@@ -5,7 +5,6 @@ import { Api } from '@/api/index';
 import axios from 'axios';
 
 async function featureextraction() {
-
 	const inputpath = 'C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/input/';
 	const outputpath = 'C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/output/';
 	let modifiedArray = inputRasters.value.map((value) => inputpath + value);
@@ -18,15 +17,12 @@ async function featureextraction() {
 	});
 	console.log('区域统计接口测试成功');
 	console.log(resdata);
-
-}
-
-// const InputSlidePiontFile = ref('');
-
 	if (resdata.status === 200) {
 		getfileurl(OutputFeatureFile.value);
 	}
+}
 
+// const InputSlidePiontFile = ref('');
 
 //接收文件
 async function getfileurl(filename: string) {
@@ -87,7 +83,6 @@ const InputSlidePiontFileChange = async (event: Event) => {
 		}
 	}
 };
-
 
 const InputSlideCellFile = ref([]);
 const fileInput2 = ref(null);
@@ -276,6 +271,8 @@ function confirmbnt() {}
 								<button class="moveupbutton" @click="upItem"></button>
 								<button class="movedownbutton" @click="downItem"></button>
 							</div>
+						</div>
+					</div>
 
 					<div class="row">
 						<div class="col">
@@ -289,7 +286,6 @@ function confirmbnt() {}
 						</div>
 						<div class="col2">
 							<button @click="triggerFileInput1" class="upload-btn"></button>
-
 						</div>
 					</div>
 				</div>
