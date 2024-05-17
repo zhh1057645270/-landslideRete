@@ -15,8 +15,8 @@ async function Grasstool() {
 		output_cvar: fileName3.value,
 		output_area: fileName4.value,
 	});
-	console.log("斜坡单元格划分接口测试成功")
-	console.log(resdata)
+	console.log('斜坡单元格划分接口测试成功');
+	console.log(resdata);
 }
 
 const girdfile = ref('');
@@ -33,7 +33,7 @@ const InputGirdFileChange = async (event: Event) => {
 		formData.append('file', file);
 
 		try {
-			const response = await axios.post('http://127.0.0.1:9898/upload', formData, {
+			const response = await axios.post('http://192.168.1.61:9898/upload', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},
@@ -43,7 +43,7 @@ const InputGirdFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-}
+};
 const fileName2 = ref('');
 const fileInput2 = ref(null);
 function triggerFileInput2() {
@@ -80,7 +80,6 @@ function handleFileChange4(event: any) {
 	}
 }
 
-
 function increment(id: any) {
 	var input = document.getElementById(id);
 	var currentValue = parseInt(input.value, 10);
@@ -105,7 +104,7 @@ function Cancelfun() {
 </script>
 
 <template>
-	<Popup name="斜坡单元格划分" left="0.7rem" top="0.08rem" style="width:15%">
+	<Popup name="斜坡单元格划分" left="0.7rem" top="0.08rem" style="width: 15%">
 		<div class="popup-content">
 			<div class="parameters-container">
 				<label for="parameter1">输入栅格</label>
@@ -116,8 +115,8 @@ function Cancelfun() {
 				</div>
 				<div class="parameter">
 					<label for="parameter2">划分面积阈值</label>
-					<div class="number-adjuster" style="border:1px solid #ccc">
-						<input type="text" id="parameter2" v-model="divide_size" style="border:0px">
+					<div class="number-adjuster" style="border: 1px solid #ccc">
+						<input type="text" id="parameter2" v-model="divide_size" style="border: 0px" />
 						<div class="button-group">
 							<button @click="increment('parameter2')" id="upbutton"></button>
 							<button @click="decrement('parameter2')" id="downbutton"></button>
@@ -126,8 +125,8 @@ function Cancelfun() {
 				</div>
 				<div class="parameter">
 					<label for="parameter3">合并面积阈值</label>
-					<div class="number-adjuster" style="border:1px solid #ccc">
-						<input type="text" id="parameter3" v-model="merge_size" style="border:0px">
+					<div class="number-adjuster" style="border: 1px solid #ccc">
+						<input type="text" id="parameter3" v-model="merge_size" style="border: 0px" />
 						<div class="button-group">
 							<button @click="increment('parameter3')" id="upbutton"></button>
 							<button @click="decrement('parameter3')" id="downbutton"></button>
@@ -225,7 +224,6 @@ function Cancelfun() {
 	background-color: #00000000;
 	color: #ccc;
 	padding: 8px;
-
 }
 
 .number-adjuster {

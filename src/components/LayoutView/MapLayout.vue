@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import MapView from '@/components/MapView/index.vue';
 import TestPopup from '@/views/mapView/home/compoents/TestPopup.vue';
-
+// import ItemsTree from '@/components/MapView/ItemsTree.vue';
 import { ref } from 'vue';
 
 const visible = ref(true);
-
 </script>
 
 <template>
@@ -13,8 +12,9 @@ const visible = ref(true);
 		<!-- <div class="left-bar"></div> -->
 		<div class="map-view">
 			<MapView />
+
 			<RouterView />
-			
+			<!-- <ItemsTree /> -->
 			<!-- <TestPopup v-model="visible" /> -->
 		</div>
 	</div>

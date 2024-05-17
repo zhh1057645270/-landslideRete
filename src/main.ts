@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-
 import App from './App.vue';
 import router from './router';
 import 'echarts';
@@ -20,8 +19,7 @@ import Antd from 'ant-design-vue';
 import axios from 'axios';
 const app = createApp(App);
 
-
-app.use(ElementPlus)
+app.use(ElementPlus);
 app.component('v-chart', ECharts);
 app.component('DynamicDigital', DynamicDigital);
 app.component('SvgIcon', SvgIcon);
@@ -30,4 +28,5 @@ app.use(ElementPlus);
 app.use(router);
 app.use(store);
 app.use(Antd);
+
 app.mount('#app');

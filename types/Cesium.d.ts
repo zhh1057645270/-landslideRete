@@ -20205,7 +20205,7 @@ declare namespace Cesium {
      * <div align='center'>
      * <table border='0' cellpadding='5'><tr>
      * <td align='center'><code>default</code><br/><img src='Images/Billboard.setColor.Alpha255.png' width='250' height='188' /></td>
-     * <td align='center'><code>alpha : 0.5</code><br/><img src='Images/Billboard.setColor.Alpha127.png' width='250' height='188' /></td>
+     * <td align='center'><code>alpha : 0.5</code><br/><img src='Images/Billboard.setColor.Alphapng' width='250' height='188' /></td>
      * </tr></table>
      * </div>
      * </p>

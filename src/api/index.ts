@@ -9,16 +9,17 @@
 import { ZonalStatApi } from './modules/ZonalStatAPI';
 import { GrassToolApi } from './modules/GrassToolAPI';
 import { Common } from './modules';
-import {  ReclassificationApi } from './modules/ReclassificationAPI'
+import { ReclassificationApi } from './modules/ReclassificationAPI';
 import { FeaExtractionApi } from './modules/FeaExtractionAPI';
-import { LSEApi } from './modules/LSEAPI'
+import { LSEApi } from './modules/LSEAPI';
+import { ShowResultAPI } from './modules/ShowResultAPI';
 
 export const Api = {
-    Common,
-    ZonalStatApi,
-    GrassToolApi,
-    ReclassificationApi,
-    FeaExtractionApi,
-    LSEApi,
+	Common,
+	ZonalStatApi,
+	GrassToolApi,
+	ReclassificationApi,
+	FeaExtractionApi,
+	LSEApi,
+	ShowResultAPI,
 };
-

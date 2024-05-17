@@ -5,7 +5,7 @@
  * @LastEditTime: 2022-09-05 08:49:42
  */
 var projectConfig = {
-	baseUrl: 'http://127.0.0.1:9898',
+	baseUrl: 'http://192.168.1.61:9898',
 	dtServerUrl: '',
 	dtServer: '',
 	title: '川藏铁路多灾种灾害监测预警平台',

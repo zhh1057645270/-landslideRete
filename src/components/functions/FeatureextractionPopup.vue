@@ -20,21 +20,19 @@ import axios from 'axios';
 //         "C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/input/yx.tif"
 //     ])
 async function featureextraction() {
-	const inputpath = "C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/input/";
-	const outputpath = "C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/output/";
-	let modifiedArray = inputRasters.value.map(value => inputpath + value);
+	const inputpath = 'C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/input/';
+	const outputpath = 'C:/Users/Administrator/Desktop/SAEvaluation23_06_21/Server/Data/Feature_Extraction/output/';
+	let modifiedArray = inputRasters.value.map((value) => inputpath + value);
 	const resdata = await Api.FeaExtractionApi.FeaExtraction({
 		in_points: InputSlidePiontFile.value,
-        in_vector: InputSlideCellFile.value,
-        in_rasters: inputRasters.value,
-        types: "随机标记",
-        out_csv: OutputFeatureFile.value,
+		in_vector: InputSlideCellFile.value,
+		in_rasters: inputRasters.value,
+		types: '随机标记',
+		out_csv: OutputFeatureFile.value,
 	});
-	console.log("区域统计接口测试成功")
-	console.log(resdata)
+	console.log('区域统计接口测试成功');
+	console.log(resdata);
 }
-
-
 
 const InputSlidePiontFile = ref('');
 const fileInput1 = ref(null);
@@ -60,7 +58,7 @@ const InputSlidePiontFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-}
+};
 // /upload-multiple
 
 const InputSlideCellFile = ref('');
@@ -87,40 +85,40 @@ const InputSlideCellFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-}
+};
 
-const inputRasters = ref([])
+const inputRasters = ref([]);
 const fileName3 = ref('');
 const fileInputRaster = ref(null);
 // function triggerRasterInput() {
 // 	fileInputRaster.value.click();
 // }
 const handleRasterChange = async (event: Event) => {
-    const input = event.target;
-    const files = input.files;
+	const input = event.target;
+	const files = input.files;
 
-    if (files.length) {
-        const formData = new FormData();
-        
-        // Append each file to the FormData object
-        Array.from(files).forEach(file => {
-            formData.append('files', file);
-            inputRasters.value.push(file.name);
-        });
+	if (files.length) {
+		const formData = new FormData();
 
-        // Make a POST request to the server
-        try {
-            const response = await axios.post('http://127.0.0.1:9898/upload-multiple', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('Files uploaded successfully:', response.data);
-        } catch (error) {
-            console.error('Error uploading files:', error);
-        }
-    }
-}
+		// Append each file to the FormData object
+		Array.from(files).forEach((file) => {
+			formData.append('files', file);
+			inputRasters.value.push(file.name);
+		});
+
+		// Make a POST request to the server
+		try {
+			const response = await axios.post('http://0.0.0.0:9898/upload-multiple', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+			console.log('Files uploaded successfully:', response.data);
+		} catch (error) {
+			console.error('Error uploading files:', error);
+		}
+	}
+};
 
 const OutputFeatureFile = ref('');
 const fileInput4 = ref(null);
@@ -146,7 +144,7 @@ const OutputFeatureFileChange = async (event: Event) => {
 			console.error('Error uploading file:', error);
 		}
 	}
-}
+};
 
 function Cancelfun() {
 	InputSlidePiontFile.value = '';
@@ -163,28 +161,27 @@ function Cancelfun() {
 const selectedFileIndex = ref(null);
 function removeItem() {
 	if (selectedFileIndex.value !== null) {
-        inputRasters.value.splice(selectedFileIndex.value, 1);
-        selectedFileIndex.value = null; // Reset selection
-    }
+		inputRasters.value.splice(selectedFileIndex.value, 1);
+		selectedFileIndex.value = null; // Reset selection
+	}
 }
 const upItem = () => {
 	const index = selectedFileIndex.value;
-    if (index > 0) {
-        const item = inputRasters.value.splice(index, 1)[0];
-        inputRasters.value.splice(index - 1, 0, item);
-        selectedFileIndex.value--; // Update the selected index
-    }
+	if (index > 0) {
+		const item = inputRasters.value.splice(index, 1)[0];
+		inputRasters.value.splice(index - 1, 0, item);
+		selectedFileIndex.value--; // Update the selected index
+	}
 };
 
 const downItem = () => {
 	const index = selectedFileIndex.value;
-    if (index < inputRasters.value.length - 1) {
-        const item = inputRasters.value.splice(index, 1)[0];
-        inputRasters.value.splice(index + 1, 0, item);
-        selectedFileIndex.value++; // Update the selected index
-    }
+	if (index < inputRasters.value.length - 1) {
+		const item = inputRasters.value.splice(index, 1)[0];
+		inputRasters.value.splice(index + 1, 0, item);
+		selectedFileIndex.value++; // Update the selected index
+	}
 };
-
 
 function addClassification() {
 	document.getElementById('fileInputRaster').click();
@@ -192,13 +189,13 @@ function addClassification() {
 </script>
 
 <template>
-	<Popup name="特征提取及样本标记" left="0.62rem" top="0.08rem" style="width:15%">
+	<Popup name="特征提取及样本标记" left="0.62rem" top="0.08rem" style="width: 15%">
 		<div class="popup-content">
 			<div class="parameters-container">
 				<label for="parameter1">输入滑坡点</label>
 				<div class="container">
 					<input type="file" ref="fileInput1" @change="InputSlidePiontFileChange" style="display: none" />
-					<input type="text" v-model="InputSlidePiontFile" class="file-name-input" id="file1"/>
+					<input type="text" v-model="InputSlidePiontFile" class="file-name-input" id="file1" />
 					<button @click="triggerFileInput1" class="upload-btn"></button>
 				</div>
 
@@ -224,7 +221,12 @@ function addClassification() {
 							<div class="col">
 								<table class="table">
 									<tbody>
-										<tr v-for="(item, index) in inputRasters" :key="index" @click="selectedFileIndex = index" :class="{selected: selectedFileIndex === index}">
+										<tr
+											v-for="(item, index) in inputRasters"
+											:key="index"
+											@click="selectedFileIndex = index"
+											:class="{ selected: selectedFileIndex === index }"
+										>
 											<td>{{ item }}</td>
 										</tr>
 									</tbody>
@@ -300,7 +302,6 @@ function addClassification() {
 
 .row {
 	display: flex;
-
 }
 
 .col {
@@ -377,7 +378,6 @@ function addClassification() {
 	}
 }
 
-
 .table {
 	width: 100%;
 }
@@ -386,7 +386,6 @@ th,
 td {
 	padding: 5px;
 	border: 0.5px solid rgb(110, 110, 110);
-
 }
 
 .table th:last-child,
