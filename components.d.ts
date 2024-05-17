@@ -22,7 +22,10 @@ declare module '@vue/runtime-core' {
     FeatureextractionPopup: typeof import('./src/components/functions/FeatureextractionPopup.vue')['default']
     Hr: typeof import('./src/components/utils/Hr.vue')['default']
     InputNode: typeof import('./src/components/LayoutView/reteView/InputNode.vue')['default']
+<<<<<<< HEAD
     ItemsTree: typeof import('./src/components/MapView/ItemsTree.vue')['default']
+=======
+>>>>>>> Parameter_panel
     LayoutBox: typeof import('./src/components/LayoutView/layoutBox.vue')['default']
     LayoutHeader: typeof import('./src/components/LayoutView/LayoutHeader.vue')['default']
     LayoutInnerBox: typeof import('./src/components/LayoutView/LayoutInnerBox.vue')['default']
@@ -47,6 +50,10 @@ declare module '@vue/runtime-core' {
     RasterreclassIndex: typeof import('./src/components/functions/popup/RasterreclassIndex.vue')['default']
     RasterreclassPopup: typeof import('./src/components/functions/RasterreclassPopup.vue')['default']
     Reclassification: typeof import('./src/components/Rete-vue/reclassification.vue')['default']
+<<<<<<< HEAD
+=======
+    ReteButton: typeof import('./src/components/Rete-vue/reteButton.vue')['default']
+>>>>>>> Parameter_panel
     ReteProgress: typeof import('./src/components/Rete-vue/reteProgress.vue')['default']
     ReteRadio: typeof import('./src/components/Rete-vue/reteRadio.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

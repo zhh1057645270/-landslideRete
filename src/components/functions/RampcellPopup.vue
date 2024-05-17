@@ -6,23 +6,52 @@ import axios from 'axios';
 
 var divide_size = ref(1000000);
 var merge_size = ref(10000);
+var Grasstoolresdata = 500;
 async function Grasstool() {
 	const resdata = await Api.GrassToolApi.GrassTool({
 		input_raster: girdfile.value,
 		divide_size: divide_size.value,
 		merge_size: merge_size.value,
-		output_slopeunit: fileName2.value,
-		output_cvar: fileName3.value,
-		output_area: fileName4.value,
+		output_slopeunit: Outputcell.value,
+		output_cvar: Outputcvar.value,
+		output_area: Outputarea.value,
 	});
 	console.log('斜坡单元格划分接口测试成功');
 	console.log(resdata);
+
+	Grasstoolresdata = resdata.status;
+}
+//接收文件
+async function getfileurl(filename: string) {
+	console.log('请求文件名为' + filename);
+	const response = await Api.GrassToolApi.getfileapi({
+		filename: filename,
+	});
+	if (response.status === 200) {
+		// 创建一个URL指向这个blob对象，并用于创建下载链接
+		const url = window.URL.createObjectURL(new Blob([response.data]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', filename); // 设置下载文件名
+		document.body.appendChild(link);
+		link.click(); // 触发下载
+		link.parentNode.removeChild(link); // 下载后移除元素
+		window.URL.revokeObjectURL(url); // 释放blob对象的URL
+
+		console.log('文件下载成功');
+	} else {
+		console.log('下载失败，状态码：' + response.status);
+	}
+
+	console.log(response.data);
+	console.log('接收文件接口测试成功');
 }
 
+// 输入栅格
 const girdfile = ref('');
-const fileInput1 = ref(null);
+const InputrasterFile = ref(null);
 function triggerFileInput1() {
-	fileInput1.value.click();
+	InputrasterFile.value.click();
 }
 const InputGirdFileChange = async (event: Event) => {
 	const input = event.target as HTMLInputElement;
@@ -44,39 +73,45 @@ const InputGirdFileChange = async (event: Event) => {
 		}
 	}
 };
+
 const fileName2 = ref('');
 const fileInput2 = ref(null);
+// 输出斜坡单元矢量结果
+const Outputcell = ref('');
+const Outputcellfile = ref(null);
 function triggerFileInput2() {
-	fileInput2.value.click();
+	Outputcellfile.value.click();
 }
-function handleFileChange2(event: any) {
+function OutputcellFileChange(event: any) {
 	const file = event.target.files[0];
 	if (file) {
-		fileName2.value = file.name;
+		Outputcell.value = file.name;
 	}
 }
 
-const fileName3 = ref('');
-const fileInput3 = ref(null);
+//输出坡向圆方差
+const Outputcvar = ref('');
+const OutputcvarFile = ref(null);
 function triggerFileInput3() {
-	fileInput3.value.click();
+	OutputcvarFile.value.click();
 }
-function handleFileChange3(event: any) {
+function OutputcvarFileChange(event: any) {
 	const file = event.target.files[0];
 	if (file) {
-		fileName3.value = file.name;
+		Outputcvar.value = file.name;
 	}
 }
 
-const fileName4 = ref('');
-const fileInput4 = ref(null);
+// 输出单元面积
+const Outputarea = ref('');
+const OutputareaFile = ref(null);
 function triggerFileInput4() {
-	fileInput4.value.click();
+	OutputareaFile.value.click();
 }
-function handleFileChange4(event: any) {
+function OutputareaFileChange(event: any) {
 	const file = event.target.files[0];
 	if (file) {
-		fileName4.value = file.name;
+		Outputarea.value = file.name;
 	}
 }
 
@@ -93,13 +128,22 @@ function decrement(id: any) {
 
 function Cancelfun() {
 	girdfile.value = '';
-	fileInput1.value = null;
-	fileName2.value = '';
-	fileInput2.value = null;
-	fileName3.value = '';
-	fileInput3.value = null;
-	fileName4.value = '';
-	fileInput4.value = null;
+	InputrasterFile.value = null;
+	Outputcell.value = '';
+	Outputcellfile.value = null;
+	Outputcvar.value = '';
+	OutputcvarFile.value = null;
+	Outputarea.value = '';
+	OutputareaFile.value = null;
+}
+
+function confirmbnt() {
+	Grasstool();
+	if (Grasstoolresdata === 200) {
+		getfileurl(Outputcell.value);
+		getfileurl(Outputcell.value);
+		getfileurl(Outputarea.value);
+	}
 }
 </script>
 
@@ -109,7 +153,7 @@ function Cancelfun() {
 			<div class="parameters-container">
 				<label for="parameter1">输入栅格</label>
 				<div class="container">
-					<input type="file" ref="fileInput1" @change="InputGirdFileChange" style="display: none" />
+					<input type="file" ref="InputrasterFile" @change="InputGirdFileChange" style="display: none" />
 					<input type="text" v-model="girdfile" class="file-name-input" />
 					<button @click="triggerFileInput1" class="upload-btn"></button>
 				</div>
@@ -136,28 +180,28 @@ function Cancelfun() {
 				<div class="parameters-container">
 					<label for="parameter4">输出斜坡单元矢量结果</label>
 					<div class="container">
-						<input type="file" ref="fileInput2" @change="handleFileChange2" style="display: none" />
-						<input type="text" v-model="fileName2" class="file-name-input" />
+						<input type="file" ref="Outputcellfile" @change="OutputcellFileChange" style="display: none" />
+						<input type="text" v-model="Outputcell" class="file-name-input" />
 						<button @click="triggerFileInput2" class="upload-btn"></button>
 					</div>
 				</div>
 				<div class="parameters-container">
 					<label for="parameter5">输出坡向圆方差</label>
 					<div class="container">
-						<input type="file" ref="fileInput3" @change="handleFileChange3" style="display: none" />
-						<input type="text" v-model="fileName3" class="file-name-input" />
+						<input type="file" ref="OutputcvarFile" @change="OutputcvarFileChange" style="display: none" />
+						<input type="text" v-model="Outputcvar" class="file-name-input" />
 						<button @click="triggerFileInput3" class="upload-btn"></button>
 					</div>
 				</div>
 				<div class="parameters-container">
 					<label for="parameter6">输出单元面积</label>
 					<div class="container">
-						<input type="file" ref="fileInput4" @change="handleFileChange4" style="display: none" />
-						<input type="text" v-model="fileName4" class="file-name-input" />
+						<input type="file" ref="OutputareaFile" @change="OutputareaFileChange" style="display: none" />
+						<input type="text" v-model="Outputarea" class="file-name-input" />
 						<button @click="triggerFileInput4" class="upload-btn"></button>
 					</div>
 				</div>
-				<button class="donebutton" @click="Grasstool">确定</button>
+				<button class="donebutton" @click="confirmbnt">确定</button>
 				<button class="canclebutton" @click="Cancelfun">取消</button>
 			</div>
 		</div>
@@ -167,7 +211,6 @@ function Cancelfun() {
 <style lang="scss" scoped>
 .popup-content {
 	padding: 10px;
-	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 	position: relative;
 	font-size: 12px;
@@ -184,7 +227,6 @@ function Cancelfun() {
 .parameter input {
 	width: 100%;
 	border: 1px solid rgb(161, 161, 161);
-	border-radius: 4px;
 	// box-sizing: border-box;
 	background-color: #00000000;
 	color: #ccc;
@@ -219,7 +261,6 @@ function Cancelfun() {
 	padding: 8px;
 	margin-right: 5px;
 	border: 1px solid rgb(161, 161, 161);
-	border-radius: 4px;
 	box-sizing: border-box;
 	background-color: #00000000;
 	color: #ccc;
